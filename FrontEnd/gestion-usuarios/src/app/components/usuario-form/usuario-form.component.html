@@ -1,0 +1,122 @@
+<form [formGroup]="usuarioForm" (ngSubmit)="guardar()">
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <label for="departamento" class="form-label">Departamento:</label>
+      <div class="dropdown">
+        <button
+          class="form-select text-muted d-flex justify-content-between align-items-center"
+          type="button"
+          id="departamentoDropdown"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          {{ getDepartamentoNombre() }}
+          <i class="fas fa-chevron-down"></i>
+        </button>
+        <ul class="dropdown-menu w-100" aria-labelledby="departamentoDropdown">
+          <li *ngFor="let departamento of departamentos">
+            <a
+              class="dropdown-item"
+              (click)="seleccionarDepartamento(departamento)"
+              >{{ departamento.nombre }}</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <label for="cargo" class="form-label">Cargo:</label>
+      <div class="dropdown">
+        <button
+          class="form-select text-muted d-flex justify-content-between align-items-center"
+          type="button"
+          id="cargoDropdown"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          {{ getCargoNombre() }}
+          <i class="fas fa-chevron-down"></i>
+        </button>
+        <ul class="dropdown-menu w-100" aria-labelledby="cargoDropdown">
+          <li *ngFor="let cargo of cargos">
+            <a class="dropdown-item" (click)="seleccionarCargo(cargo)">{{
+              cargo.nombre
+            }}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <label for="usuario" class="form-label">Usuario:</label>
+      <input
+        type="text"
+        class="form-control"
+        id="usuario"
+        formControlName="usuario"
+      />
+    </div>
+    <div class="col-md-6">
+      <label for="email" class="form-label">Email:</label>
+      <input
+        type="email"
+        class="form-control"
+        id="email"
+        formControlName="email"
+      />
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <label for="primer_nombre" class="form-label">Primer Nombre:</label>
+      <input
+        type="text"
+        class="form-control"
+        id="primer_nombre"
+        formControlName="primer_nombre"
+      />
+    </div>
+    <div class="col-md-6">
+      <label for="segundo_nombre" class="form-label">Segundo Nombre:</label>
+      <input
+        type="text"
+        class="form-control"
+        id="segundo_nombre"
+        formControlName="segundo_nombre"
+      />
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <label for="primer_apellido" class="form-label">Primer Apellido:</label>
+      <input
+        type="text"
+        class="form-control"
+        id="primer_apellido"
+        formControlName="primer_apellido"
+      />
+    </div>
+    <div class="col-md-6">
+      <label for="segundo_apellido" class="form-label">Segundo Apellido:</label>
+      <input
+        type="text"
+        class="form-control"
+        id="segundo_apellido"
+        formControlName="segundo_apellido"
+      />
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-end mt-4">
+    <button type="submit" class="btn btn-primary me-2">
+      {{ modoEdicion ? "Actualizar" : "Registrar" }}
+    </button>
+    <button type="button" class="btn btn-light" (click)="cancelar()">
+      Cancelar
+    </button>
+  </div>
+</form>

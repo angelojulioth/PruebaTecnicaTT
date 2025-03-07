@@ -1,0 +1,190 @@
+<div class="container-fluid p-0">
+  <div class="p-3 bg-white">
+    <div class="text-muted small">Módulo de Administración</div>
+    <h2 class="mb-4">Administración de usuarios</h2>
+
+    <div class="row mb-4">
+      <div class="col-md-4">
+        <div class="dropdown">
+          <button
+            class="form-select text-muted d-flex justify-content-between align-items-center"
+            type="button"
+            id="departamentoDropdown"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            {{
+              departamentoSeleccionado
+                ? departamentoSeleccionado.nombre
+                : "Seleccione un Departamento"
+            }}
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <ul
+            class="dropdown-menu w-100"
+            aria-labelledby="departamentoDropdown"
+          >
+            <li>
+              <a class="dropdown-item" (click)="seleccionarDepartamento(null)">
+                Seleccione un Departamento
+              </a>
+            </li>
+            <li *ngFor="let departamento of departamentos">
+              <a
+                class="dropdown-item"
+                (click)="seleccionarDepartamento(departamento)"
+                >{{ departamento.nombre }}</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="dropdown">
+          <button
+            class="form-select text-muted d-flex justify-content-between align-items-center"
+            type="button"
+            id="cargoDropdown"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            {{
+              cargoSeleccionado
+                ? cargoSeleccionado.nombre
+                : "Seleccione un Cargo"
+            }}
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <ul class="dropdown-menu w-100" aria-labelledby="cargoDropdown">
+            <li>
+              <a class="dropdown-item" (click)="seleccionarCargo(null)">
+                Seleccione un Cargo
+              </a>
+            </li>
+            <li *ngFor="let cargo of cargos">
+              <a class="dropdown-item" (click)="seleccionarCargo(cargo)">{{
+                cargo.nombre
+              }}</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-4 text-end">
+        <button class="btn btn-light" (click)="abrirModalCrear()">
+          Crear nuevo usuario
+        </button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Usuario</th>
+              <th>Nombres</th>
+              <th>Apellidos</th>
+              <th>Departamento</th>
+              <th>Cargo</th>
+              <th>Email</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let usuario of usuariosFiltrados"
+              [class.table-active]="usuarioSeleccionado?.id === usuario.id"
+            >
+              <td>{{ usuario.usuario }}</td>
+              <td>{{ usuario.primer_nombre }} {{ usuario.segundo_nombre }}</td>
+              <td>
+                {{ usuario.primer_apellido }} {{ usuario.segundo_apellido }}
+              </td>
+              <td>{{ usuario.departamento?.nombre }}</td>
+              <td>{{ usuario.cargo?.nombre }}</td>
+              <td>{{ usuario.email }}</td>
+              <td>
+                <button
+                  class="btn btn-sm text-success"
+                  (click)="abrirModalEditar(usuario)"
+                >
+                  <i class="fas fa-edit"></i> Editar
+                </button>
+                <button
+                  class="btn btn-sm text-danger"
+                  (click)="abrirModalConfirmacion(usuario)"
+                >
+                  <i class="fas fa-trash"></i> Eliminar
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card-footer bg-light p-2">
+        <div class="text-muted small">
+          Total Registros: {{ usuariosFiltrados.length }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para crear/editar usuario -->
+<div
+  class="modal fade"
+  id="usuarioModal"
+  tabindex="-1"
+  aria-labelledby="usuarioModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="usuarioModalLabel">
+          {{ modoEdicion ? "Editar usuario" : "Registrar usuario" }}
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <app-usuario-form
+          [usuario]="usuarioSeleccionado"
+          [departamentos]="departamentos"
+          [cargos]="cargos"
+          [modoEdicion]="modoEdicion"
+          (onGuardar)="guardarUsuario($event)"
+          (onCancelar)="cerrarModal()"
+        >
+        </app-usuario-form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de confirmación para eliminar -->
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body text-center p-4">
+        <p>¿Está seguro de eliminar el usuario seleccionado?</p>
+        <div class="mt-4">
+          <button
+            type="button"
+            class="btn btn-primary me-2"
+            (click)="eliminarUsuario()"
+          >
+            Aceptar
+          </button>
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
