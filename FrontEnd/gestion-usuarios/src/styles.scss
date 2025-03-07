@@ -30,9 +30,13 @@ body {
   border-color: var(--color-danger);
 }
 
-.card {
+.cus-shadow {
   border-radius: 0;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: -5px 5px 15px 5px #00000040;
+}
+
+.cus-btn-primary {
+  background: #006ab2;
 }
 
 .form-control,

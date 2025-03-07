@@ -1,10 +1,19 @@
-<form [formGroup]="usuarioForm" (ngSubmit)="guardar()">
+<form
+  [formGroup]="usuarioForm"
+  (ngSubmit)="guardar()"
+  class="container-fluid p-4 bg-white"
+>
+  <div class="row mb-4">
+    <!-- <div class="col-12">
+      <h5 class="mb-0">Registrar usuario</h5>
+    </div> -->
+  </div>
   <div class="row mb-3">
     <div class="col-md-6">
       <label for="departamento" class="form-label">Departamento:</label>
       <div class="dropdown">
         <button
-          class="form-select text-muted d-flex justify-content-between align-items-center"
+          class="form-select text-muted d-flex justify-content-between align-items-center w-100"
           type="button"
           id="departamentoDropdown"
           data-bs-toggle="dropdown"
@@ -28,7 +37,7 @@
       <label for="cargo" class="form-label">Cargo:</label>
       <div class="dropdown">
         <button
-          class="form-select text-muted d-flex justify-content-between align-items-center"
+          class="form-select text-muted d-flex justify-content-between align-items-center w-100"
           type="button"
           id="cargoDropdown"
           data-bs-toggle="dropdown"
@@ -53,7 +62,7 @@
       <label for="usuario" class="form-label">Usuario:</label>
       <input
         type="text"
-        class="form-control"
+        class="form-control w-100"
         id="usuario"
         formControlName="usuario"
       />
@@ -62,7 +71,7 @@
       <label for="email" class="form-label">Email:</label>
       <input
         type="email"
-        class="form-control"
+        class="form-control w-100"
         id="email"
         formControlName="email"
       />
@@ -74,7 +83,7 @@
       <label for="primer_nombre" class="form-label">Primer Nombre:</label>
       <input
         type="text"
-        class="form-control"
+        class="form-control w-100"
         id="primer_nombre"
         formControlName="primer_nombre"
       />
@@ -83,7 +92,7 @@
       <label for="segundo_nombre" class="form-label">Segundo Nombre:</label>
       <input
         type="text"
-        class="form-control"
+        class="form-control w-100"
         id="segundo_nombre"
         formControlName="segundo_nombre"
       />
@@ -95,7 +104,7 @@
       <label for="primer_apellido" class="form-label">Primer Apellido:</label>
       <input
         type="text"
-        class="form-control"
+        class="form-control w-100"
         id="primer_apellido"
         formControlName="primer_apellido"
       />
@@ -104,7 +113,7 @@
       <label for="segundo_apellido" class="form-label">Segundo Apellido:</label>
       <input
         type="text"
-        class="form-control"
+        class="form-control w-100"
         id="segundo_apellido"
         formControlName="segundo_apellido"
       />
@@ -112,10 +121,13 @@
   </div>
 
   <div class="d-flex justify-content-end mt-4">
-    <button type="submit" class="btn btn-primary me-2">
-      {{ modoEdicion ? "Actualizar" : "Registrar" }}
+    <button
+      type="submit"
+      class="btn btn-primary cus-btn-primary text-white me-2"
+    >
+      Registrar
     </button>
-    <button type="button" class="btn btn-light" (click)="cancelar()">
+    <button type="button" class="btn btn-secondary" (click)="cancelar()">
       Cancelar
     </button>
   </div>
