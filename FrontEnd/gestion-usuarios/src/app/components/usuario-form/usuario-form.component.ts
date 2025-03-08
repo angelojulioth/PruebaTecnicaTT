@@ -22,6 +22,7 @@ export class UsuarioFormComponent implements OnInit, OnChanges {
   @Input() departamentos: Departamento[] = [];
   @Input() cargos: Cargo[] = [];
   @Input() modoEdicion = false;
+  @Input() isLoading = false; // Add loading state input
 
   @Output() onGuardar = new EventEmitter<Usuario>();
   @Output() onCancelar = new EventEmitter<void>();

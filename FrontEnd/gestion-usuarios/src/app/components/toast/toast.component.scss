@@ -1,0 +1,30 @@
+.toast-container {
+  min-width: 280px;
+  max-width: 320px;
+}
+
+.toast {
+  transition: opacity 0.5s ease-in-out;
+}
+
+.toast.show {
+  opacity: 1;
+}
+
+.toast-header {
+  background-color: inherit;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  color: inherit;
+}
+
+.btn-close {
+  filter: brightness(0) invert(1);
+}
+
+.btn-close:focus {
+  box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25);
+}
+
+.toast-body {
+  word-wrap: break-word;
+}

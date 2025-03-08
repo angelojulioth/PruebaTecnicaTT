@@ -76,7 +76,16 @@
       </div>
     </div>
 
-    <div class="card">
+    <!-- Add a spinner for table loading -->
+    <div *ngIf="isLoadingData" class="text-center py-5">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+      <p class="mt-2">Cargando datos...</p>
+    </div>
+
+    <!-- Show table only when not loading -->
+    <div class="card" *ngIf="!isLoadingData">
       <div class="table-responsive">
         <table class="table table-hover">
           <thead>
@@ -157,6 +166,7 @@
           [departamentos]="departamentos"
           [cargos]="cargos"
           [modoEdicion]="modoEdicion"
+          [isLoading]="isLoading"
           (onGuardar)="guardarUsuario($event)"
           (onCancelar)="cerrarModal()"
         >
@@ -177,10 +187,22 @@
             type="button"
             class="btn btn-primary me-2"
             (click)="eliminarUsuario()"
+            [disabled]="isDeletingUser"
           >
+            <span
+              *ngIf="isDeletingUser"
+              class="spinner-border spinner-border-sm me-2"
+              role="status"
+              aria-hidden="true"
+            ></span>
             Aceptar
           </button>
-          <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+          <button
+            type="button"
+            class="btn btn-light"
+            data-bs-dismiss="modal"
+            [disabled]="isDeletingUser"
+          >
             Cancelar
           </button>
         </div>
@@ -188,3 +210,6 @@
     </div>
   </div>
 </div>
+
+<!-- agregar el componente toast al final del template -->
+<app-toast></app-toast>

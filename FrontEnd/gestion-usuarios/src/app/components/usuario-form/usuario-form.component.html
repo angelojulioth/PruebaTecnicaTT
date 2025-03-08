@@ -119,10 +119,22 @@
     <button
       type="submit"
       class="btn btn-primary cus-btn-primary text-white me-2"
+      [disabled]="isLoading"
     >
+      <span
+        *ngIf="isLoading"
+        class="spinner-border spinner-border-sm me-2"
+        role="status"
+        aria-hidden="true"
+      ></span>
       {{ modoEdicion ? "Actualizar" : "Registrar" }}
     </button>
-    <button type="button" class="btn btn-secondary" (click)="cancelar()">
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="cancelar()"
+      [disabled]="isLoading"
+    >
       Cancelar
     </button>
   </div>

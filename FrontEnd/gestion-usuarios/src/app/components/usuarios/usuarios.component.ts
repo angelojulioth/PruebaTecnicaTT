@@ -7,6 +7,7 @@ import { UsuarioService } from '../../services/usuario.service';
 import { DepartamentoService } from '../../services/departamento.service';
 import { CargoService } from '../../services/cargo.service';
 import { ModalService } from '../../services/modal.service';
+import { ToastService } from '../../services/toast.service'; // impotar el servicio toast
 import { forkJoin } from 'rxjs';
 
 @Component({
@@ -26,11 +27,17 @@ export class UsuariosComponent implements OnInit {
 
   modoEdicion = false;
 
+  // Add loading states
+  isLoading = false;
+  isLoadingData = false;
+  isDeletingUser = false;
+
   constructor(
     private usuarioService: UsuarioService,
     private departamentoService: DepartamentoService,
     private cargoService: CargoService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private toastService: ToastService // injectar el servicio toast
   ) {}
 
   ngOnInit(): void {
@@ -38,6 +45,7 @@ export class UsuariosComponent implements OnInit {
   }
 
   cargarDatos(): void {
+    this.isLoadingData = true;
     // Primero cargar usuarios
     this.usuarioService.getUsuarios().subscribe({
       next: (usuarios) => {
@@ -49,6 +57,13 @@ export class UsuariosComponent implements OnInit {
         console.error('Error al cargar usuarios:', error);
         this.usuarios = [];
         this.usuariosFiltrados = [];
+        this.toastService.showError(
+          'Error',
+          'No se pudieron cargar los usuarios'
+        );
+      },
+      complete: () => {
+        this.isLoadingData = false;
       },
     });
 
@@ -65,6 +80,10 @@ export class UsuariosComponent implements OnInit {
         console.error('Error al cargar datos complementarios:', error);
         this.departamentos = [];
         this.cargos = [];
+        this.toastService.showError(
+          'Error',
+          'No se pudieron cargar departamentos o cargos'
+        );
       },
     });
   }
@@ -126,32 +145,48 @@ export class UsuariosComponent implements OnInit {
 
   // Guardar un usuario, ya sea creación o actualización
   guardarUsuario(usuario: Usuario): void {
+    this.isLoading = true;
     if (this.modoEdicion && usuario.id !== undefined) {
       this.usuarioService
         .actualizarUsuario(usuario.id as number, usuario)
         .subscribe({
           next: (usuarioActualizado) => {
             console.log('Usuario actualizado', usuarioActualizado);
-            // Refresh data and close modal
             this.cargarDatos();
             this.modalService.ocultar('usuarioModal');
+            this.toastService.showSuccess(
+              'Éxito',
+              'Usuario actualizado correctamente'
+            );
           },
           error: (error) => {
             console.error('Error al actualizar usuario', error);
-            // mostrar notificación de error
+            this.toastService.showError(
+              'Error',
+              'No se pudo actualizar el usuario'
+            );
+          },
+          complete: () => {
+            this.isLoading = false;
           },
         });
     } else {
       this.usuarioService.crearUsuario(usuario).subscribe({
         next: (nuevoUsuario) => {
           console.log('Usuario creado', nuevoUsuario);
-          // Refresh data and close modal
           this.cargarDatos();
           this.modalService.ocultar('usuarioModal');
+          this.toastService.showSuccess(
+            'Éxito',
+            'Usuario creado correctamente'
+          );
         },
         error: (error) => {
           console.error('Error al crear usuario', error);
-          // mostrar notificación de error
+          this.toastService.showError('Error', 'No se pudo crear el usuario');
+        },
+        complete: () => {
+          this.isLoading = false;
         },
       });
     }
@@ -159,11 +194,28 @@ export class UsuariosComponent implements OnInit {
 
   eliminarUsuario(): void {
     if (this.usuarioSeleccionado && this.usuarioSeleccionado.id) {
+      this.isDeletingUser = true;
       this.usuarioService
         .eliminarUsuario(this.usuarioSeleccionado.id)
-        .subscribe(() => {
-          this.cargarDatos();
-          this.modalService.ocultar('confirmModal');
+        .subscribe({
+          next: () => {
+            this.cargarDatos();
+            this.modalService.ocultar('confirmModal');
+            this.toastService.showSuccess(
+              'Éxito',
+              'Usuario eliminado correctamente'
+            );
+          },
+          error: (error) => {
+            console.error('Error al eliminar usuario', error);
+            this.toastService.showError(
+              'Error',
+              'No se pudo eliminar el usuario'
+            );
+          },
+          complete: () => {
+            this.isDeletingUser = false;
+          },
         });
     }
   }
