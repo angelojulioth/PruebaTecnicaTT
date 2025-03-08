@@ -125,7 +125,7 @@
       type="submit"
       class="btn btn-primary cus-btn-primary text-white me-2"
     >
-      Registrar
+      {{ modoEdicion ? "Actualizar" : "Registrar" }}
     </button>
     <button type="button" class="btn btn-secondary" (click)="cancelar()">
       Cancelar

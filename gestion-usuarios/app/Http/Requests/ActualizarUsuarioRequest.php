@@ -20,7 +20,7 @@ class ActualizarUsuarioRequest extends FormRequest
         'required',
         'string',
         'max:50',
-        Rule::unique('usuarios', 'usuario')->ignore($this->route('usuario'))
+        Rule::unique('usuarios', 'usuario')->ignore($this->route('id'))
       ],
       'primer_nombre' => 'required|string|max:100',
       'segundo_nombre' => 'nullable|string|max:100',
@@ -30,7 +30,7 @@ class ActualizarUsuarioRequest extends FormRequest
         'required',
         'email',
         'max:100',
-        Rule::unique('usuarios', 'email')->ignore($this->route('usuario'))
+        Rule::unique('usuarios', 'email')->ignore($this->route('id'))
       ],
       'departamento_id' => 'required|integer|exists:departamentos,id',
       'cargo_id' => 'required|integer|exists:cargos,id',

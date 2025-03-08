@@ -125,9 +125,39 @@ export class UsuarioService {
 
   // Actualizar un usuario existente
   actualizarUsuario(id: number, usuario: Usuario): Observable<Usuario> {
-    return this.http
-      .put<Usuario>(`${this.apiUrl}/${id}`, usuario)
-      .pipe(catchError(this.handleError));
+    // Format request to match exactly what Laravel expects
+    const requestBody = {
+      usuario: usuario.usuario,
+      primer_nombre: usuario.primer_nombre,
+      segundo_nombre: usuario.segundo_nombre || null,
+      primer_apellido: usuario.primer_apellido,
+      segundo_apellido: usuario.segundo_apellido || null,
+      email: usuario.email,
+      departamento_id: Number(usuario.departamento_id),
+      cargo_id: Number(usuario.cargo_id),
+      // _method: 'PATCH', // esto es importante para algunas configuraciones de laravel
+    };
+
+    console.log('Enviando body del request:', requestBody);
+
+    // parche para actualizar un usuario
+    return this.http.patch<Usuario>(`${this.apiUrl}/${id}`, requestBody).pipe(
+      tap((response) => console.log('Respuesta de actualización:', response)),
+      catchError((error) => {
+        if (error.status === 422) {
+          console.error('Validación fallida:', error.error);
+
+          // logging detalle de errores de validación
+          if (error.error && error.error.errors) {
+            console.error(
+              'Errores de validación específicos:',
+              error.error.errors
+            );
+          }
+        }
+        return this.handleError(error);
+      })
+    );
   }
 
   // Eliminar un usuario

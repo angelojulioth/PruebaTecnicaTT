@@ -124,18 +124,35 @@ export class UsuariosComponent implements OnInit {
     this.modalService.mostrar('confirmModal');
   }
 
+  // Guardar un usuario, ya sea creación o actualización
   guardarUsuario(usuario: Usuario): void {
-    if (this.modoEdicion && usuario.id) {
+    if (this.modoEdicion && usuario.id !== undefined) {
       this.usuarioService
-        .actualizarUsuario(usuario.id, usuario)
-        .subscribe(() => {
-          this.cargarDatos();
-          this.cerrarModal();
+        .actualizarUsuario(usuario.id as number, usuario)
+        .subscribe({
+          next: (usuarioActualizado) => {
+            console.log('Usuario actualizado', usuarioActualizado);
+            // Refresh data and close modal
+            this.cargarDatos();
+            this.modalService.ocultar('usuarioModal');
+          },
+          error: (error) => {
+            console.error('Error al actualizar usuario', error);
+            // mostrar notificación de error
+          },
         });
     } else {
-      this.usuarioService.crearUsuario(usuario).subscribe(() => {
-        this.cargarDatos();
-        this.cerrarModal();
+      this.usuarioService.crearUsuario(usuario).subscribe({
+        next: (nuevoUsuario) => {
+          console.log('Usuario creado', nuevoUsuario);
+          // Refresh data and close modal
+          this.cargarDatos();
+          this.modalService.ocultar('usuarioModal');
+        },
+        error: (error) => {
+          console.error('Error al crear usuario', error);
+          // mostrar notificación de error
+        },
       });
     }
   }

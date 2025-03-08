@@ -11,7 +11,7 @@ Route::controller(UsuarioController::class)->group(function () {
   Route::get('/usuarios', 'index');
   Route::post('/usuarios', 'store');
   Route::get('/usuarios/{id}', 'show');
-  Route::put('/usuarios/{id}', 'update');
+  Route::patch('/usuarios/{id}', 'update');
   Route::delete('/usuarios/{id}', 'destroy');
 });
 
